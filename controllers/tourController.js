@@ -2,6 +2,27 @@ const fs = require('fs');
 
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/../dev-data/data/tours.json`));
 
+exports.checkId = (req, res, next, val) => {
+  if (val * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'error',
+      message: 'Tour not found'
+    });
+  }
+  next();
+}
+
+exports.checkBody = (req, res, next) => {
+  const { name, price } = req.body;
+  if (!name || !price) {
+    return res.status(400).json({
+      status: 'error',
+      message: 'Bad request, params missing'
+    });
+  }
+  next();
+}
+
 exports.getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -34,11 +55,6 @@ exports.getTour = (req, res) => {
       data: { tour }
     })
   }
-  
-  res.status(404).json({
-    status: 'error',
-    message: 'Tour not found'
-  })
 }
 
 exports.updateTour = (req, res) => {
