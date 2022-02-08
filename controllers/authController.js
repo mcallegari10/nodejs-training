@@ -1,4 +1,3 @@
-const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/userModel');
@@ -57,13 +56,13 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   
-  const freshUser = await User.findById(decoded.id);
-  if (!freshUser) return next(new AppError('The user does not exist', 401));
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser) return next(new AppError('The user does not exist', 401));
 
-  if (freshUser.changedPasswordAfter(decoded.iat)) {
+  if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(new AppError('Recently changed password', 401));
   }
 
-  req.user = freshUser;
+  req.user = currentUser;
   next();
 })
