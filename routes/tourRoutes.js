@@ -23,6 +23,6 @@ router.route('/')
 router.route('/:id')
   .get(tourCtrl.getTour)
   .patch(tourCtrl.updateTour)
-  .delete(tourCtrl.deleteTour);
+  .delete(authCtrl.protect, authCtrl.restrictTo('admin'), tourCtrl.deleteTour);
 
 module.exports = router;

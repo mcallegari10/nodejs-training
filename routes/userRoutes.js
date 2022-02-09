@@ -8,6 +8,12 @@ const router = express.Router();
 router.post('/signup', authCtrl.signup);
 router.post('/login', authCtrl.login);
 
+router.post('/forgotPassword', authCtrl.forgotPassword);
+router.patch('/resetPassword/:token', authCtrl.resetPassword);
+router.patch('/updatePassword', authCtrl.updatePassword);
+
+router.patch('/updateMe', authCtrl.protect, userCtrl.udpateMe);
+
 router.route('/')
   .get(userCtrl.getAllUsers)
   .post(userCtrl.createUser);
