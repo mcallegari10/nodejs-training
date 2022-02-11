@@ -33,6 +33,13 @@ exports.udpateMe = catchAsync(async (req, res, next) => {
   });
 })
 
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndDelete(req.user.id, { active: false });
+  res.status(200).json({
+    status: 'success'
+  });
+})
+
 exports.getUser = (req, res) => {
   res.status(500).json({
     status: 'error',

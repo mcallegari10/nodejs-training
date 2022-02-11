@@ -13,6 +13,7 @@ router.patch('/resetPassword/:token', authCtrl.resetPassword);
 router.patch('/updatePassword', authCtrl.updatePassword);
 
 router.patch('/updateMe', authCtrl.protect, userCtrl.udpateMe);
+router.delete('/deleteMe', authCtrl.protect, userCtrl.deleteMe);
 
 router.route('/')
   .get(userCtrl.getAllUsers)
